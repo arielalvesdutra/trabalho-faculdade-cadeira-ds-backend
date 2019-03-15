@@ -4,6 +4,10 @@ namespace App\Entities;
 
 use InvalidArgumentException;
 
+/**
+ * Class User
+ * @package App\Entities
+ */
 class User extends Entity
 {
     const EMAIL_REGEX = "/^([a-z0-9.]{1,})([@])([a-z0-9]{1,})([.])([a-z0-9.]{1,})([a-z]{1})$/";
@@ -17,6 +21,11 @@ class User extends Entity
      * @var string $name
      */
     protected $name;
+
+    /**
+     * @var string $password
+     */
+    protected $password;
 
     /**
      * @return string
@@ -35,7 +44,17 @@ class User extends Entity
     }
 
     /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
      * @param string $email
+     *
+     * @return User
      */
     public function setEmail(string $email)
     {
@@ -62,5 +81,21 @@ class User extends Entity
         }
 
         throw new InvalidArgumentException("Parâmeto nome inválido.");
+    }
+
+    /**
+     * @param string $password
+     *
+     * @return $this
+     */
+    public function setPassword(string $password)
+    {
+        if (!empty($password)) {
+
+            $this->password = $password;
+            return $this;
+        }
+
+        throw new InvalidArgumentException("Parâmetro senha inválido.");
     }
 }
