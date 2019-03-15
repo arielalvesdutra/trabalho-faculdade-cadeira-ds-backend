@@ -21,7 +21,7 @@ class UserTest extends TestCase
     protected function assertPreConditions(): void
     {
         $this->assertTrue(
-          class_exists('App\Entities\User'),
+            class_exists('App\Entities\User'),
             'Classe App\Entities\User não encontrada'
         );
 
@@ -30,7 +30,6 @@ class UserTest extends TestCase
             'App\Entities\Entity',
             'A classe deve ter extender a App\Entities\Entity'
         );
-
     }
 
     /**
@@ -39,7 +38,7 @@ class UserTest extends TestCase
     public function testSetAndGetNameShouldWork()
     {
         $userName = "Teste";
-        $user =  new User();
+        $user = new User();
         $user->setName($userName);
 
         $this->assertEquals($userName, $user->getName(), "Getter ou Setter do nome não está funcionando.");
@@ -84,5 +83,33 @@ class UserTest extends TestCase
 
         $user = new User();
         $user->setEmail($userEmail);
+    }
+
+    /**
+     * Testa o método setEmail() e getEmail()
+     */
+    public function testSetAndGetPasswordShouldWork()
+    {
+        $password = "password";
+
+        $user = new User();
+        $user->setPassword($password);
+
+        $this->assertEquals($password, $user->getPassword(), "Getter ou Setter da senha não está funcionando");
+    }
+
+    /**
+     * Testa o método setPassword() com um dado inválido e deve lançar
+     * uma InvalidArgumentException
+     */
+    public function testSetPasswordWithInvalidDataShouldThrowAnInvalidArgumentException()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $userPassword = "";
+
+        $user = new User();
+        $user->setPassword($userPassword);
+
     }
 }
