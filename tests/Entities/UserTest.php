@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Entities;
+namespace Tests\Entities;
 
+use App\Entities\User;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @todo documentar
+ * Testes Unitários para a entidade App\Entities\User
  *
  * Class UserTest
  * @package App\Entities
@@ -22,13 +23,13 @@ class UserTest extends TestCase
     {
         $this->assertTrue(
             class_exists('App\Entities\User'),
-            'Classe App\Entities\User não encontrada'
+            'Classe App\Entities\User não encontrada.'
         );
 
         $this->assertEquals(
             get_parent_class('App\Entities\User'),
             'App\Entities\Entity',
-            'A classe deve ter extender a App\Entities\Entity'
+            'A classe deve ter extender a App\Entities\Entity.'
         );
     }
 
@@ -68,7 +69,7 @@ class UserTest extends TestCase
         $user = new User();
         $user->setEmail($email);
 
-        $this->assertEquals($email, $user->getEmail(), "Getter ou Setter do email não está funcionando");
+        $this->assertEquals($email, $user->getEmail(), "Getter ou Setter do email não está funcionando.");
     }
 
     /**
@@ -95,7 +96,7 @@ class UserTest extends TestCase
         $user = new User();
         $user->setPassword($password);
 
-        $this->assertEquals($password, $user->getPassword(), "Getter ou Setter da senha não está funcionando");
+        $this->assertEquals($password, $user->getPassword(), "Getter ou Setter da senha não está funcionando.");
     }
 
     /**
