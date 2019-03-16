@@ -1,6 +1,6 @@
 {
   "name": "arielalvesdutra/trabalho-faculdade-cadeira-ds-backend",
-  "Description" : "Trabalho para a cadeira Desenvolvimento para Web do curso de ADS.",
+  "Description": "Trabalho para a cadeira Desenvolvimento para Web do curso de ADS.",
   "authors": [
     {
       "name": "Ariel Alves Dutra",
@@ -17,13 +17,13 @@
     "phpunit/phpunit": "^8"
   },
   "scripts": {
-    "test": "vendor/bin/phpunit tests"
+    "test": "vendor/bin/phpunit"
   },
   "autoload": {
     "psr-4": { "App\\": "src/" }
   },
   "autoload-dev": {
-    "psr-4": { "App\\": "tests/" }
+    "psr-4": { "Tests\\": "tests/" }
   }
 
 }
