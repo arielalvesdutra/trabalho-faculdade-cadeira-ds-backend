@@ -28,7 +28,7 @@ class User extends Model
 
         $entities = $stm->fetchAll();
 
-        if ($entities instanceof  bool) {
+        if (empty($entities)) {
             throw new Exception("Nenhum registro encontrado");
         }
 
