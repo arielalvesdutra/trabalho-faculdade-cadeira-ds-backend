@@ -169,6 +169,6 @@ class UserTest extends TestCase
             )
         );
 
-//        $database->dropTable('users_tests');
+        $database->dropTable('users_tests');
     }
 }
