@@ -7,10 +7,21 @@ use Exception;
 use PDO;
 use PDOStatement;
 
+/**
+ * @todo documentar
+ *
+ * Class User
+ * @package App\Models
+ */
 class User extends Model
 {
     protected $tableName = "users";
 
+    /**
+     * @param array $filters
+     *
+     * @return $this
+     */
     public function addFilters(array $filters)
     {
         $this->filters = $filters;
@@ -18,6 +29,11 @@ class User extends Model
         return $this;
     }
 
+    /**
+     * @return array
+     *
+     * @throws Exception
+     */
     public function find(): array
     {
         $stm = $this->getPdo()->prepare($this->buildFindQuery());
@@ -35,6 +51,11 @@ class User extends Model
         return $entities;
     }
 
+    /**
+     * @return Entities\User
+     *
+     * @throws Exception
+     */
     public function findFirst(): Entities\User
     {
         $stm = $this->pdo->prepare($this->buildFindQuery());
@@ -77,8 +98,6 @@ class User extends Model
 
     /**
      * @param $entity Entities\User
-     *
-     * @return bool
      */
     public function update($entity)
     {
@@ -96,6 +115,13 @@ class User extends Model
         $stm->execute();
     }
 
+    /**
+     * Método para adicionar valores dos filtros à query de consulta
+     *
+     * @param PDOStatement $pdoStatement
+     *
+     * @return PDOStatement
+     */
     protected function bindValues(PDOStatement $pdoStatement): PDOStatement
     {
         $filters = $this->getFilters();
