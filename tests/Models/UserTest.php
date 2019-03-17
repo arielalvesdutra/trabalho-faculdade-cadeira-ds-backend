@@ -159,6 +159,8 @@ class UserTest extends TestCase
             DefaultDatabaseConnection::getConnection()
         );
 
+        $userModel->setTableName("users_test_table");
+
         $id = $userModel->save($userEntity);
 
         $userModel->delete($id);
