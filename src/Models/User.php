@@ -15,6 +15,9 @@ use PDOStatement;
  */
 class User extends Model
 {
+    /**
+     * @var string $tableName
+     */
     protected $tableName = "users";
 
     /**
