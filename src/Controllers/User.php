@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Databases\Factories\Connections\DefaultDatabaseConnection;
-use App\Models;
 use App\Repositories;
 use Exception;
 use Psr\Http\Message\ServerRequestInterface;
