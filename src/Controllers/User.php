@@ -9,7 +9,12 @@ use Exception;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-
+/**
+ * Controller para tratar as requisições de Usuário
+ *
+ * Class User
+ * @package App\Controllers
+ */
 class User extends Controller
 {
 
