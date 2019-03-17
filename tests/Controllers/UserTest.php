@@ -63,8 +63,6 @@ class UserTest extends TestCase
 
     /**
      * Teste para o método create()
-     *
-     * @todo 1.Deve retornar a mensagem HTTP 201
      */
     public function testCreateUserShouldWork()
     {
@@ -89,7 +87,8 @@ class UserTest extends TestCase
         $response = $userController->create($this->createRequest(
             'POST',
             '/users',
-            $requestParameters),
+            $requestParameters
+        ),
             new Response()
         );
 
@@ -102,14 +101,13 @@ class UserTest extends TestCase
         $userModel = new Models\User(
             DefaultDatabaseConnection::getConnection()
         );
-
         $userModel->setTableName('users_tests');
 
         $userEntity = $userModel->addFilters([ "email =" => "'". $email ."'"])
                                 ->findFirst();
 
         $this->assertEquals(
-          $name,
+            $name,
             $userEntity->getName()
         );
 
@@ -124,6 +122,9 @@ class UserTest extends TestCase
         );
     }
 
+    /**
+     * @todo 1. Deve retornar o status 400 caso a requisição esteja incorreta
+     */
     public function testCreateUserWithBadRequestShouldReturn400HTTPMessage()
     {
 
@@ -145,21 +146,33 @@ class UserTest extends TestCase
 
     }
 
+    /**
+     * @todo
+     */
     public function testRetrieveNotFoundUsersShouldReturn404HTTPMessage()
     {
 
     }
 
+    /**
+     * @todo
+     */
     public function testRetrieveNotFoundUserShouldReturn404HTTPMessage()
     {
 
     }
 
+    /**
+     * @todo
+     */
     public function testRetrieveUsersWithBadRequestShouldReturn400HTTPMessage()
     {
 
     }
 
+    /**
+     * @todo
+     */
     public function testRetrieveUserWithBadRequestShouldReturn400HTTPMessage()
     {
 

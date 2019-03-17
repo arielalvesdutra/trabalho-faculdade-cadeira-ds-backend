@@ -6,7 +6,7 @@ use App\Factories\Entities\UserEntityFactory;
 use App\Models;
 
 /**
- * Repository de usuários
+ * Repository de Usuários
  *
  * Class User
  * @package App\Repositories

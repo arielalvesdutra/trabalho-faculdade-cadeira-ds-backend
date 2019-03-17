@@ -6,7 +6,7 @@ use App\Factories\Entities\UserEntityFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
- *
+ * Testes Unitários para a classe App\Factories\Entities\UserEntityFactory
  *
  * Class UserEntityFactoryTest
  * @package Tests\Factories\Entities
@@ -25,7 +25,6 @@ class UserEntityFactoryTest extends TestCase
             'Classe App\Factories\Entities\UserEntityFactory não encontrada.'
         );
     }
-
 
     /**
      * Testa o método estático create()

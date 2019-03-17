@@ -7,8 +7,17 @@ use App\Databases\Enum\ColumnType\IntType;
 use App\Databases\Enum\ColumnType\VarcharType;
 use App\Databases\Enum\MySQLEngine\InnoDb;
 
+/**
+ * Classe para criar a tabela 'users' no banco de dados
+ *
+ * Class UserTable
+ * @package App\Databases\Factories\Tables
+ */
 class UserTable implements  TableFactoryInterface
 {
+    /**
+     * @throws \Exception
+     */
     public static function create()
     {
         $database = new Databases\Database(

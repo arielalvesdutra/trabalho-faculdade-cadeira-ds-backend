@@ -35,6 +35,7 @@ class DefaultDatabaseConnectionTest extends TestCase
 
         $connection = Connections\DefaultDatabaseConnection::getConnection();
 
-        $this->assertInstanceOf(PDO::class, $connection, "Não foi retornada um conexão com o banco de dados.");
+        $this->assertInstanceOf(PDO::class, $connection,
+            "Não foi retornada um conexão com o banco de dados.");
     }
 }

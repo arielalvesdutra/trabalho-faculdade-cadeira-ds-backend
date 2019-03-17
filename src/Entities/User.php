@@ -5,6 +5,8 @@ namespace App\Entities;
 use InvalidArgumentException;
 
 /**
+ * Entidade do Usuário do sistema.
+ *
  * Class User
  * @package App\Entities
  */

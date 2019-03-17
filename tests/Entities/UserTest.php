@@ -111,6 +111,5 @@ class UserTest extends TestCase
 
         $user = new User();
         $user->setPassword($userPassword);
-
     }
 }

@@ -10,6 +10,11 @@ use App\Databases;
  */
 class HourAdjustmentSystemDatabase implements DatabaseFactoryInterface
 {
+    /**
+     * HourAdjustmentSystemDatabase constructor.
+     *
+     * Valida se algum dos campos obrigatórios do arquivo .env não está preenchido.
+     */
     public function __construct()
     {
         if (empty($_ENV['MYSQL_HOST'])) {

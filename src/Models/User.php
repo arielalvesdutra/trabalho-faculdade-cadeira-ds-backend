@@ -8,7 +8,7 @@ use PDO;
 use PDOStatement;
 
 /**
- * @todo documentar
+ * Model de Usuários
  *
  * Class User
  * @package App\Models
