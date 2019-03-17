@@ -50,5 +50,7 @@ class User
         $this->model->setTableName(
           $this->model->getTableName() . "_tests"
         );
+
+        return $this;
     }
 }
