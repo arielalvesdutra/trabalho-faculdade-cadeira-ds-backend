@@ -242,6 +242,7 @@ class UserTest extends TestCase
         $table->addColumn((new Databases\Column('email', new VarcharType()))
             ->setNotNull()
             ->setSize(50)
+            ->setUnique()
         );
 
         $table->addColumn((new Databases\Column('password', new VarcharType()))
