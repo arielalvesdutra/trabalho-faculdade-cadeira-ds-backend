@@ -40,6 +40,11 @@ class Column
      */
     protected $type;
 
+    /**
+     * @var bool $unique
+     */
+    protected $unique = false;
+
     public function __construct(string $name, ColumnType $type)
     {
         $this->setName($name);
@@ -60,6 +65,14 @@ class Column
     public function isNotNull(): bool
     {
         return $this->notNull;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUnique(): bool
+    {
+        return $this->unique;
     }
 
     /**
@@ -144,6 +157,15 @@ class Column
         $this->type = $columnType;
     }
 
+    /**
+     * @return $this
+     */
+    public function setUnique()
+    {
+        $this->unique = true;
+        return $this;
+    }
+
     public function __toString()
     {
         $size = $this->getSize()
@@ -158,11 +180,16 @@ class Column
             ? " AUTO_INCREMENT"
             : "";
 
+        $unique = $this->isUnique()
+            ? " UNIQUE"
+            : "";
+
         return $this->getName() . " " .
                $this->getType()->getType() .
                $size .
                $notNull .
-               $autoIncrement
+               $autoIncrement .
+               $unique
             ;
     }
 }
