@@ -2,13 +2,14 @@
 
 namespace Tests\Repositories;
 
-use App\Models;
 use App\Databases;
 use App\Databases\Enum\ColumnType\IntType;
 use App\Databases\Enum\ColumnType\VarcharType;
 use App\Databases\Enum\MySQLEngine\InnoDb;
 use App\Databases\Factories\Connections\DefaultDatabaseConnection;
+use App\Models;
 use App\Repositories;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -104,7 +105,27 @@ class UserTest extends TestCase
      */
     public function testCreateUserWithDuplicateEmailShouldThrowAnException()
     {
+        $this->expectException(Exception::class);
 
+        $userName = 'User Duplicated Repository Test';
+        $userEmail = 'teste.duplicated.repo@teste.com';
+        $userPassword = 'password';
+
+        $controllerParameters = [
+            'name' => $userName,
+            'email' => $userEmail,
+            'password' => $userPassword
+        ];
+
+        $userRepository = new Repositories\User(
+            new Models\User(
+                DefaultDatabaseConnection::getConnection()
+            )
+        );
+
+        $userRepository->createUser($controllerParameters);
+
+        $userRepository->createUser($controllerParameters);
     }
 
     /**

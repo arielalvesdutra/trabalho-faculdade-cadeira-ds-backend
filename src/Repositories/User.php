@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\NotFoundException;
 use App\Factories\Entities\UserEntityFactory;
 use App\Models;
+use Exception;
 
 /**
  * Repository de Usuários
@@ -29,6 +31,8 @@ class User
 
     /**
      * @param array $parameters
+     *
+     * @throws Exception
      */
     public function createUser(array $parameters)
     {
@@ -38,7 +42,20 @@ class User
             $parameters['password']
         );
 
-        $this->model->save($userEntity);
+        try {
+
+            $fetchedUser = $this->model->addFilters([
+                "email like '" => $userEntity->getEmail()  ."'"
+            ])->findFirst();
+
+            if (!empty($fetchedUser)) {
+                throw new Exception('Já existe um usuário com o mesmo e-mail.');
+            }
+
+        } catch (NotFoundException $exception) {
+
+            $this->model->save($userEntity);
+        }
     }
 
     /**
