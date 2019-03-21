@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Entities;
-use Exception;
+use App\Exceptions\NotFoundException;
 use PDO;
 use PDOStatement;
 
@@ -35,7 +35,7 @@ class User extends Model
     /**
      * @return array
      *
-     * @throws Exception
+     * @throws NotFoundException
      */
     public function find(): array
     {
@@ -48,7 +48,7 @@ class User extends Model
         $entities = $stm->fetchAll();
 
         if (empty($entities)) {
-            throw new Exception("Nenhum registro encontrado");
+            throw new NotFoundException("Nenhum registro encontrado");
         }
 
         return $entities;
@@ -57,7 +57,7 @@ class User extends Model
     /**
      * @return Entities\User
      *
-     * @throws Exception
+     * @throws NotFoundException
      */
     public function findFirst(): Entities\User
     {
@@ -70,7 +70,7 @@ class User extends Model
         $entity = $stm->fetch();
 
         if (empty($entity)) {
-            throw new Exception("Nenhum registro encontrado");
+            throw new NotFoundException("Nenhum registro encontrado");
         }
 
         return $entity;
