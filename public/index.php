@@ -3,6 +3,7 @@
 require '../bootstrap.php';
 
 use App\Controllers;
+use App\Middlewares\Auth;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\App;
@@ -28,6 +29,15 @@ $container[Controllers\User::class] = function ()
       )
   );
 };
+/**
+ * Define configuração de middleware e de debug
+ */
+$container->get('settings')
+    ->replace([
+        'debug' => true,
+        'determineRouteBeforeAppMiddleware' => true,
+        'displayErrorDetails' => true
+]);
 
 /**
  * Instancia o slim
@@ -43,8 +53,27 @@ $slim->get('/', function (RequestInterface $request, ResponseInterface $response
 });
 
 /**
- * Users
+ * Autenticação
  */
-$slim->post('/users', Controllers\User::class . ':create');
+$slim->post('/sigin', Auth::class . ':sigIn');
+
+/**
+ * Rotas que precisam de autenticação
+ */
+$slim->group('', function() use ($slim) {
+
+    /**
+     * Rota de teste
+     */
+    $slim->get('/te', function($request, $response){
+        return $response->withJson("Teste");
+    });
+
+    /**
+     * Users
+     */
+    $slim->post('/users', Controllers\User::class . ':create');
+})->add(new Auth());
+
 
 $slim->run();
