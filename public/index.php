@@ -56,19 +56,18 @@ $slim->get('/', function (RequestInterface $request, ResponseInterface $response
  * Autenticação
  */
 $slim->post('/sigin', Auth::class . ':sigIn');
-$slim->get('/logout', Auth::class . ':logOut');
-
 
 /**
  * Rotas que precisam de autenticação
  */
 $slim->group('', function() use ($slim) {
 
-
+    /**
+     * Rota de teste
+     */
     $slim->get('/te', function($request, $response){
         return $response->withJson("Teste");
     });
-
 
     /**
      * Users
