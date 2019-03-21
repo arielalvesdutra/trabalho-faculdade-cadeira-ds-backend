@@ -123,6 +123,8 @@ class UserTest extends TestCase
             )
         );
 
+        $userRepository->setTestsEnvironment();
+
         $userRepository->createUser($controllerParameters);
 
         $userRepository->createUser($controllerParameters);
