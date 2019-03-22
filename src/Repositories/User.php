@@ -59,6 +59,31 @@ class User
     }
 
     /**
+     * @return array
+     *
+     * @throws NotFoundException
+     */
+    public function retrieveAllUsers()
+    {
+        $users = $this->model->find();
+
+        return objectToArray($users);
+    }
+    /**
+     * @param $id
+     *
+     * @return array
+     *
+     * @throws NotFoundException
+     */
+    public function retrieveUser($id)
+    {
+        $userEntity = $this->model->addFilters([ 'id = ' => $id])->findFirst();
+
+        return objectToArray($userEntity);
+    }
+
+    /**
      * Método para adicionar "_tests" na tabela de model da repository
      * para que a model interfira nos dados de um tabela de testes
      */
