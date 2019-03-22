@@ -79,7 +79,7 @@ class User extends Model
     /**
      * @param $entity Entities\User
      *
-     * @return bool
+     * @return string
      */
     public function save($entity)
     {
