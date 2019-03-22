@@ -60,9 +60,9 @@ class User extends Entity
      */
     public function setEmail(string $email)
     {
-        if (preg_match(self::EMAIL_REGEX, $email)) {
+        if (preg_match(self::EMAIL_REGEX, strtolower($email))) {
 
-            $this->email = $email;
+            $this->email = strtolower($email);
             return $this;
         }
 
