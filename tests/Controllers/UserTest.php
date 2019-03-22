@@ -11,6 +11,7 @@ use App\Databases\Enum\ColumnType\VarcharType;
 use App\Databases\Enum\MySQLEngine\InnoDb;
 use App\Databases\Factories\Connections\DefaultDatabaseConnection;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
@@ -133,9 +134,67 @@ class UserTest extends TestCase
     /**
      * @todo 1.Deve retornar uma mensagem HTTP 200
      */
-    public function testRetrieveUsersShouldWork()
+    public function testRetrieveAllUsersShouldWork()
     {
+        $name = "Retrieve All Users Request";
+        $email = "teste.retrive.all.users.req@teste.com";
+        $password = "132456";
 
+        $userController = new Controllers\User(
+            (new Repositories\User(
+                new Models\User(
+                    DefaultDatabaseConnection::getConnection()
+                )
+            ))->setTestsEnvironment()
+        );
+
+        $createRequestParameters = [
+            'name' => $name,
+            'email' => $email,
+            'password' =>  $password
+        ];
+
+        $userController->create($this->createRequest(
+            'POST',
+            '/users',
+            $createRequestParameters
+        ),
+            new Response()
+        );
+
+        $response = $userController->retrieveAll($this->createRequest(
+            'GET',
+            '/users',
+            []
+        ),
+            new Response()
+        );
+
+        $this->assertEquals(
+            200,
+            $response->getStatusCode(),
+            "A menesagem HTTP deve ser 200"
+        );
+
+        $responseArray =  $this->getResponseBodyAsArray($response);
+
+        $this->assertEquals(
+          $name,
+          $responseArray[0]['name']  ,
+            'Os nomes não conferem.'
+        );
+
+        $this->assertEquals(
+            $email,
+            $responseArray[0]['email']  ,
+            'Os emails não conferem.'
+        );
+
+        $this->assertEquals(
+            $password,
+            $responseArray[0]['password']  ,
+            'As senhas não conferem.'
+        );
     }
 
     /**
@@ -273,4 +332,17 @@ class UserTest extends TestCase
 
         $database->dropTable('users_tests');
     }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return array
+     */
+    private function getResponseBodyAsArray(ResponseInterface $response)
+    {
+        $responseString = (string)$response->getBody();
+
+        return json_decode($responseString, true);
+    }
+
 }
