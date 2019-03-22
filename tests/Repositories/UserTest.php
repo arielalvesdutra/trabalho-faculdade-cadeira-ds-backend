@@ -48,8 +48,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * @todo 2.Validar os valores da entidade antes de salvar na model
-     * @todo 3.Validar se existe usuário com o mesmo email
+     *
      */
     public function testCreateUserShouldWork()
     {
@@ -101,7 +100,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * @todo 1. criar dois usuários com o mesmo e-mail, o segundo usuário deve lançar uma exceção
+     *
      */
     public function testCreateUserWithDuplicateEmailShouldThrowAnException()
     {
@@ -128,6 +127,93 @@ class UserTest extends TestCase
         $userRepository->createUser($controllerParameters);
 
         $userRepository->createUser($controllerParameters);
+    }
+
+    public function testRetrieveUserShouldWork()
+    {
+
+        $userName = 'User Retrive Repository Test';
+        $userEmail = 'teste.retrive.repo@teste.com';
+        $userPassword = 'password';
+
+        $controllerParameters = [
+            'name' => $userName,
+            'email' => $userEmail,
+            'password' => $userPassword
+        ];
+
+        $userRepository = new Repositories\User(
+            new Models\User(
+                DefaultDatabaseConnection::getConnection()
+            )
+        );
+
+        $userRepository->setTestsEnvironment();
+
+        $userRepository->createUser($controllerParameters);
+
+        $id = 1;
+
+        $fetchedUser = $userRepository->retrieveUser($id);
+
+        $this->assertEquals(
+          $userName,
+          $fetchedUser['name'],
+          'Os nomes não conferem.'
+        );
+
+        $this->assertEquals(
+            $userEmail,
+            $fetchedUser['email'],
+            'Os emails não conferem.'
+        );
+
+        $this->assertEquals(
+            $userPassword,
+            $fetchedUser['password'],
+            'As senhas não conferem.'
+        );
+    }
+
+    public function testRetrieveAllUsersShouldWork()
+    {
+        $userName = 'User Retrive All Repository Test';
+        $userEmail = 'teste.retrive.all.repo@teste.com';
+        $userPassword = 'password';
+
+        $controllerParameters = [
+            'name' => $userName,
+            'email' => $userEmail,
+            'password' => $userPassword
+        ];
+
+        $userRepository = (new Repositories\User(
+            new Models\User(
+                DefaultDatabaseConnection::getConnection()
+            )
+        ))->setTestsEnvironment();
+
+        $userRepository->createUser($controllerParameters);
+
+        $fetchedUsers = $userRepository->retrieveAllUsers();
+
+        $this->assertEquals(
+            $userName,
+            $fetchedUsers[0]['name'],
+            'Os nomes não conferem.'
+        );
+
+        $this->assertEquals(
+            $userEmail,
+            $fetchedUsers[0]['email'],
+            'Os emails não conferem.'
+        );
+
+        $this->assertEquals(
+            $userPassword,
+            $fetchedUsers[0]['password'],
+            'As senhas não conferem.'
+        );
     }
 
     /**
