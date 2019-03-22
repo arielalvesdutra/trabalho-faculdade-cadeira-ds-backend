@@ -58,6 +58,13 @@ $slim->get('/', function (RequestInterface $request, ResponseInterface $response
 $slim->post('/sigin', Auth::class . ':sigIn');
 
 /**
+ * Users
+ */
+$slim->get('/users', Controllers\User::class . ':retrieveAll');
+$slim->get('/users/{id}', Controllers\User::class . ':retrieve');
+$slim->post('/users', Controllers\User::class . ':create');
+
+/**
  * Rotas que precisam de autenticação
  */
 $slim->group('', function() use ($slim) {
@@ -71,8 +78,8 @@ $slim->group('', function() use ($slim) {
 
     /**
      * Users
+     * @todo adicionar rotas de usuários  que precisam de autenticação
      */
-    $slim->post('/users', Controllers\User::class . ':create');
 })->add(new Auth());
 
 

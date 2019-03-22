@@ -46,4 +46,43 @@ class User extends Controller
             return $response->withJson($exception->getMessage(), 400);
         }
     }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * 
+     * @return mixed
+     */
+    public function retrieve(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        try {
+
+            $id = $request->getAttribute('id');
+
+            $user = $this->repository->retrieveUser($id);
+
+            return $response->withJson($user, 200);
+
+        } catch (Exception $exception) {
+            return $response->withJson($exception->getMessage(), 400);
+        }
+
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     *
+     * @return mixed
+     */
+    public function retrieveAll(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        try {
+            $users =  $this->repository->retrieveAllUsers();
+
+            return $response->withJson($users, 200);
+        } catch (Exception $exception) {
+            return $response->withJson($exception->getMessage(), 400);
+        }
+    }
 }
