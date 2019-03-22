@@ -19,7 +19,7 @@ abstract class Model
      *
      * @var array $filters
      */
-    protected $filters;
+    protected $filters = [];
 
     /**
      * Atributo para realizar as operações com o banco de dados
