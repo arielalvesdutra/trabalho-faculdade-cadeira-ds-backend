@@ -132,7 +132,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * @todo 1.Deve retornar uma mensagem HTTP 200
+     * Testa o método retrieveAll()
      */
     public function testRetrieveAllUsersShouldWork()
     {

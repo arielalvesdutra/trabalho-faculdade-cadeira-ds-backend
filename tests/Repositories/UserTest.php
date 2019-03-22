@@ -48,7 +48,7 @@ class UserTest extends TestCase
     }
 
     /**
-     *
+     * Testa o método createUser()
      */
     public function testCreateUserShouldWork()
     {
@@ -100,7 +100,9 @@ class UserTest extends TestCase
     }
 
     /**
-     *
+     * Testa o método createUser() e deve lançar uma exceção em
+     * caso de se tentar criar uma usuário com um e-mail que
+     * já existe na tabela
      */
     public function testCreateUserWithDuplicateEmailShouldThrowAnException()
     {
@@ -129,6 +131,11 @@ class UserTest extends TestCase
         $userRepository->createUser($controllerParameters);
     }
 
+    /**
+     * Testa o método retrieve()
+     *
+     * @throws \App\Exceptions\NotFoundException
+     */
     public function testRetrieveUserShouldWork()
     {
 
@@ -175,6 +182,11 @@ class UserTest extends TestCase
         );
     }
 
+    /**
+     * Testa o método retrieveAllUsers()
+     *
+     * @throws \App\Exceptions\NotFoundException
+     */
     public function testRetrieveAllUsersShouldWork()
     {
         $userName = 'User Retrive All Repository Test';
