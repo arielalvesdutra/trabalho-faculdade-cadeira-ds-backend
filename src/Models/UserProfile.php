@@ -4,10 +4,13 @@ namespace App\Models;
 
 use App\Entities;
 use App\Exceptions\NotFoundException;
+use PDO;
 use PDOStatement;
 
 class UserProfile extends Model
 {
+    protected $tableName = "user_profiles";
+
     /**
      * @param array $filters
      *
@@ -16,7 +19,7 @@ class UserProfile extends Model
     public function addFilters(array $filters)
     {
         foreach ($filters as $key => $filter) {
-            $this->filters[$key] = $filters;
+            $this->filters[$key] = $filter;
         }
 
         return $this;
@@ -76,7 +79,7 @@ class UserProfile extends Model
     {
         $stm = $this->getPdo()->prepare(
             "INSERT INTO " . $this->getTableName() . " " .
-            "(name, code) VALUES (:name, :name)"
+            "(name, code) VALUES (:name, :code)"
         );
 
         $stm->bindValue(':name',$entity->getName());
