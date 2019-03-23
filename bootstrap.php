@@ -94,7 +94,9 @@ setOnExecutionTimeEnvFileValues();
 
 use App\Databases\Factories\Databases\HourAdjustmentSystemDatabase;
 use App\Databases\Factories\Tables\UserTable;
+use App\Databases\Factories\Tables\UserProfileTable;
 
 HourAdjustmentSystemDatabase::create();
 UserTable::create();
+UserProfileTable::create();
 

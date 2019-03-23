@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DomainException;
 use PDO;
 use PDOStatement;
 
@@ -91,7 +92,11 @@ abstract class Model
      */
     public function getTableName()
     {
-        return $this->tableName;
+        if (!empty($this->tableName)) {
+            return $this->tableName;
+        }
+
+        throw new DomainException('O nome da tabela não foi definido.');
     }
 
     /**

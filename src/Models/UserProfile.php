@@ -7,27 +7,20 @@ use App\Exceptions\NotFoundException;
 use PDO;
 use PDOStatement;
 
-/**
- * Model de Usuários
- *
- * Class User
- * @package App\Models
- */
-class User extends Model
+class UserProfile extends Model
 {
-    /**
-     * @var string $tableName
-     */
-    protected $tableName = "users";
+    protected $tableName = "user_profiles";
 
     /**
      * @param array $filters
      *
-     * @return $this
+     * @return $this|mixed
      */
     public function addFilters(array $filters)
     {
-        $this->filters = $filters;
+        foreach ($filters as $key => $filter) {
+            $this->filters[$key] = $filter;
+        }
 
         return $this;
     }
@@ -37,13 +30,13 @@ class User extends Model
      *
      * @throws NotFoundException
      */
-    public function find(): array
+    public function find()
     {
         $stm = $this->getPdo()->prepare($this->buildFindQuery());
         $stm = $this->bindValues($stm);
 
         $stm->execute();
-        $stm->setFetchMode(PDO::FETCH_CLASS, 'App\Entities\User');
+        $stm->setFetchMode(PDO::FETCH_CLASS, 'App\Entities\UserProfile');
 
         $entities = $stm->fetchAll();
 
@@ -55,17 +48,17 @@ class User extends Model
     }
 
     /**
-     * @return Entities\User
+     * @return Entities\UserProfile
      *
      * @throws NotFoundException
      */
-    public function findFirst(): Entities\User
+    public function findFirst()
     {
         $stm = $this->pdo->prepare($this->buildFindQuery());
         $stm = $this->bindValues($stm);
 
         $stm->execute();
-        $stm->setFetchMode(PDO::FETCH_CLASS, 'App\Entities\User');
+        $stm->setFetchMode(PDO::FETCH_CLASS, 'App\Entities\UserProfile');
 
         $entity = $stm->fetch();
 
@@ -76,21 +69,21 @@ class User extends Model
         return $entity;
     }
 
+
     /**
-     * @param $entity Entities\User
+     * @param $entity Entities\UserProfile
      *
-     * @return string
+     * @return mixed|string
      */
     public function save($entity)
     {
         $stm = $this->getPdo()->prepare(
             "INSERT INTO " . $this->getTableName() . " " .
-            "(name, email, password) VALUES (:name, :email, :password)"
+            "(name, code) VALUES (:name, :code)"
         );
 
         $stm->bindValue(':name',$entity->getName());
-        $stm->bindValue(':email',$entity->getEmail());
-        $stm->bindValue(':password',$entity->getPassword());
+        $stm->bindValue(':code',$entity->getCode());
 
         $stm->execute();
 
@@ -100,27 +93,26 @@ class User extends Model
     }
 
     /**
-     * @param $entity Entities\User
+     * @param $entity Entities\UserProfile
+     *
+     * @return mixed|void
      */
     public function update($entity)
     {
         $stm = $this->getPdo()->prepare(
             "UPDATE " . $this->getTableName() . " " .
-            "SET name = :name, email = :email, password = :password " .
+            "SET name = :name, code = :code " .
             "WHERE id = :id"
         );
 
         $stm->bindValue(':id',$entity->getId());
         $stm->bindValue(':name',$entity->getName());
-        $stm->bindValue(':email',$entity->getEmail());
-        $stm->bindValue(':password',$entity->getPassword());
+        $stm->bindValue(':code',$entity->getCode());
 
         $stm->execute();
     }
 
     /**
-     * Método para adicionar valores dos filtros à query de consulta
-     *
      * @param PDOStatement $pdoStatement
      *
      * @return PDOStatement
@@ -137,12 +129,8 @@ class User extends Model
             $pdoStatement->bindValue(':name', $filters['name']);
         }
 
-        if (isset($filters['email'])) {
-            $pdoStatement->bindValue(':email', $filters['email']);
-        }
-
-        if (isset($filters['password'])) {
-            $pdoStatement->bindValue(':email', $filters['email']);
+        if (isset($filters['code'])) {
+            $pdoStatement->bindValue(':code', $filters['code']);
         }
 
         return $pdoStatement;
