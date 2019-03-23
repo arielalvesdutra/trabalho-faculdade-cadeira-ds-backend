@@ -29,6 +29,23 @@ $container[Controllers\User::class] = function ()
       )
   );
 };
+
+/**
+ * @return Controllers\UserProfile
+ */
+$container[Controllers\UserProfile::class] = function ()
+{
+    return new \App\Controllers\UserProfile(
+
+        new \App\Repositories\UserProfile(
+            new  \App\Models\UserProfile(
+                \App\Databases\Factories\Connections\DefaultDatabaseConnection::getConnection()
+            )
+        )
+    );
+};
+
+
 /**
  * Define configuração de middleware e de debug
  */
@@ -63,6 +80,12 @@ $slim->post('/sigin', Auth::class . ':sigIn');
 $slim->get('/users', Controllers\User::class . ':retrieveAll');
 $slim->get('/users/{id}', Controllers\User::class . ':retrieve');
 $slim->post('/users', Controllers\User::class . ':create');
+
+/**
+ * User Profile
+ */
+$slim->post('/user-profile', Controllers\UserProfile::class . ':create');
+
 
 /**
  * Rotas que precisam de autenticação
