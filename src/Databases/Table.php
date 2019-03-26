@@ -64,6 +64,18 @@ class Table
         $this->columns[$column->getName()] = $column;
     }
 
+    public function addForeignKey(Column $column, string $reference)
+    {
+        if (!$column->getType() instanceof IntType) {
+            throw new Exception("A chave estrangeira deve ser do tipo inteiro.");
+        }
+
+        $this->foreignKeys[] = [
+            'value' => $column,
+            'reference' => $reference
+        ];
+    }
+
     /**
      * Adiciona coluna à chave primária
      *
@@ -115,6 +127,38 @@ class Table
     public function getEngine(): MySQLEngine
     {
         return $this->engine;
+    }
+
+    private function getForeignKeys()
+    {
+        return $this->foreignKeys;
+    }
+
+    public function getForeignKey()
+    {
+        $numberOfColumns = sizeof($this->getForeignKeys());
+        $count = 1;
+
+        $foreignKeyDDL = '';
+
+        foreach ($this->getForeignKeys() as $foreignKey) {
+
+
+            if ($numberOfColumns == $count) {
+                $foreignKeyDDL .=
+                    "FOREIGN KEY (". $foreignKey['value']->getName() . ") " .
+                    "REFERENCES " . $foreignKey['reference'] ;
+
+            } else {
+                $foreignKeyDDL .=
+                    "FOREIGN KEY (". $foreignKey['value']->getName() . ") " .
+                    "REFERENCES " . $foreignKey['reference'] ;
+                $foreignKeyDDL .=  ",";
+                $count++;
+            }
+        }
+
+        return $foreignKeyDDL;
     }
 
     private function getPrimaryKeys()

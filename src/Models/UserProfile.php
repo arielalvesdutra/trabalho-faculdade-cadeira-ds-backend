@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Entities;
+use App\Entities\UserProfiles;
 use App\Exceptions\NotFoundException;
+use App\Factories\Entities\UserProfileEntityFactory;
 use PDO;
 use PDOStatement;
 
@@ -47,8 +48,51 @@ class UserProfile extends Model
         return $entities;
     }
 
+    public function findUserProfileByCode(string $code)
+    {
+        $query = "SELECT * " .
+                 "FROM " . $this->getTableName() . " " .
+                 "WHERE code like '" . $code ."'";
+
+        $stm = $this->getPdo()->prepare($query);
+        $stm->execute();
+        $record = $stm->fetch(PDO::FETCH_ASSOC);
+
+        if (empty($record)) {
+            throw new NotFoundException("Nenhum registro encontrado");
+        }
+
+        return UserProfileEntityFactory::create(
+            $record['code'],
+            $record['id']
+        );
+    }
+
+    public function findUserProfilesByUserId($userId)
+    {
+        $query = "SELECT up.code, up.name " .
+                 "FROM " . $this->getTableName() . " as up " .
+                 "INNER JOIN users_user_profiles as uup " .
+                 "ON uup.id_user = :user_id " .
+                 "WHERE uup.id_user_profile = up.id";
+
+        $stm = $this->getPdo()->prepare($query);
+        $stm->bindParam(":user_id", $userId);
+        $stm->execute();
+
+        $records = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+        if (empty($records)) {
+            throw new NotFoundException("Nenhum registro encontrado");
+        }
+
+        $entities = UserProfileEntityFactory::createFromArrayOfProfiles($records);
+
+        return $entities;
+    }
+
     /**
-     * @return Entities\UserProfile
+     * @return UserProfiles\UserProfile
      *
      * @throws NotFoundException
      */

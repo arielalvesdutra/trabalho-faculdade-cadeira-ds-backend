@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Databases\Factories\Connections\DefaultDatabaseConnection;
 use App\Exceptions\NotFoundException;
 use App\Factories\Entities\UserEntityFactory;
+use App\Factories\Entities\UserProfileEntityFactory;
 use App\Models;
 use Exception;
 
@@ -54,7 +56,24 @@ class User
 
         } catch (NotFoundException $exception) {
 
-            $this->model->save($userEntity);
+            $userId = $this->model->save($userEntity);
+            $userEntity->setId($userId);
+
+            if (!empty($parameters['userProfiles'])) {
+
+                $userProfileModel = new Models\UserProfile(DefaultDatabaseConnection::getConnection());
+                $usersProfilesModel = new Models\UsersProfiles(DefaultDatabaseConnection::getConnection());
+
+                foreach ($parameters['userProfiles'] as $userProfile) {
+
+
+                    $userEntity->addProfile(
+                        $userProfileModel->findUserProfileByCode($userProfile['code'])
+                    );
+                }
+
+                $usersProfilesModel->save($userEntity);
+            }
         }
     }
 
@@ -66,6 +85,20 @@ class User
     public function retrieveAllUsers()
     {
         $users = $this->model->find();
+        $userProfileModel = new Models\UserProfile(DefaultDatabaseConnection::getConnection());
+
+        foreach ($users as $key => $user) {
+            try {
+
+                $user->addProfiles(
+                    $userProfileModel->findUserProfilesByUserId($user->getId())
+                );
+
+                $users[$key] = $user;
+            } catch (NotFoundException $exception){
+                // não precisar fazer nada
+            }
+        }
 
         return objectToArray($users);
     }
@@ -79,6 +112,16 @@ class User
     public function retrieveUser($id)
     {
         $userEntity = $this->model->addFilters([ 'id = ' => $id])->findFirst();
+        $userProfileModel = new Models\UserProfile(DefaultDatabaseConnection::getConnection());
+
+        try {
+
+            $userEntity->addProfiles(
+                $userProfileModel->findUserProfilesByUserId($userEntity->getId())
+            );
+        } catch (NotFoundException $exception){
+            // não precisar fazer nada
+        }
 
         return objectToArray($userEntity);
     }
