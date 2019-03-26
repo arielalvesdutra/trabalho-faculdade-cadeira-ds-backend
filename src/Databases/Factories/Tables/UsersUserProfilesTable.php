@@ -8,12 +8,11 @@ use App\Databases\Enum\ColumnType\VarcharType;
 use App\Databases\Enum\MySQLEngine\InnoDb;
 
 /**
- * Classe para criar a tabela 'users' no banco de dados
  *
- * Class UserProfileTableTable
+ * Class UserUsersProfilesTable
  * @package App\Databases\Factories\Tables
  */
-class UserProfileTable implements  TableFactoryInterface
+class UsersUserProfilesTable implements  TableFactoryInterface
 {
     /**
      * @throws \Exception
@@ -30,27 +29,25 @@ class UserProfileTable implements  TableFactoryInterface
             )
         );
 
-        $tableName = 'user_profiles';
+        $tableName = 'users_user_profileswqq';
         $table = new Databases\Table($tableName);
 
-        $table->addColumn((new Databases\Column('id', new IntType()))
+        $table->addColumn((new Databases\Column('id_user', new IntType()))
             ->setNotNull()
-            ->setAutoIncrement()
             ->setSize(12)
         );
 
-        $table->addColumn((new Databases\Column('name', new VarcharType()))
+        $table->addColumn((new Databases\Column('id_user_profile', new IntType()))
             ->setNotNull()
-            ->setSize(50)
+            ->setSize(12)
         );
 
-        $table->addColumn((new Databases\Column('code', new VarcharType()))
-            ->setNotNull()
-            ->setSize(20)
-            ->setUnique()
-        );
+        $table->addPrimaryKey($table->getColumns()['id_user']);
+        $table->addPrimaryKey($table->getColumns()['id_user_profile']);
 
-        $table->addPrimaryKey($table->getColumns()['id']);
+        $table->addForeignKey($table->getColumns()['id_user'], 'users(id)');
+        $table->addForeignKey($table->getColumns()['id_user_profile'], 'user_profiles(id)');
+
         $table->setEngine(new InnoDb());
 
         $database->createTableIfNotExists($table);
