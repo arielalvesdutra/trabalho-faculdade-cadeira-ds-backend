@@ -2,7 +2,9 @@
 
 namespace App\Entities;
 
+use App\Entities\UserProfiles;
 use InvalidArgumentException;
+use OutOfRangeException;
 
 /**
  * Entidade do Usuário do sistema.
@@ -30,6 +32,29 @@ class User extends Entity
     protected $password;
 
     /**
+     * @var UserProfiles\UserProfile[] $userProfiles
+     */
+    protected $userProfiles = [];
+
+    /**
+     * @param UserProfiles\UserProfile $profile
+     */
+    public function addProfile(UserProfiles\UserProfile $profile)
+    {
+        $this->userProfiles[$profile->getCode()] = $profile;
+    }
+
+    /**
+     * @param array $profiles
+     */
+    public function addProfiles(array $profiles)
+    {
+        foreach ($profiles as $profile) {
+            $this->addProfile($profile);
+        }
+    }
+
+    /**
      * @return string
      */
     public function getEmail(): string
@@ -51,6 +76,29 @@ class User extends Entity
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    /**
+     * @param string $profileCode
+     *
+     * @return UserProfiles\UserProfile
+     */
+    public function getProfile(string $profileCode)
+    {
+        if (!empty($this->userProfiles[$profileCode])) {
+            return $this->userProfiles[$profileCode];
+        }
+
+        throw new OutOfRangeException('O usuário não possui o perfil passado por parâmetro');
+    }
+
+
+    /**
+     * @return UserProfiles\UserProfile[]
+     */
+    public function getProfiles()
+    {
+        return $this->userProfiles;
     }
 
     /**
