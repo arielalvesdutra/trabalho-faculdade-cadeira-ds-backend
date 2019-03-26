@@ -73,6 +73,9 @@ class Database
         $columns .= $table->getPrimaryKey()
             ? "," . $table->getPrimaryKey()
             : '';
+        $columns .= $table->getForeignKey()
+            ? "," . $table->getForeignKey()
+            : '';
         $columns .= ")";
 
         $engine = $table->getEngine()->getEngine()
