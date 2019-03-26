@@ -112,6 +112,16 @@ class User
     public function retrieveUser($id)
     {
         $userEntity = $this->model->addFilters([ 'id = ' => $id])->findFirst();
+        $userProfileModel = new Models\UserProfile(DefaultDatabaseConnection::getConnection());
+
+        try {
+
+            $userEntity->addProfiles(
+                $userProfileModel->findUserProfilesByUserId($userEntity->getId())
+            );
+        } catch (NotFoundException $exception){
+            // não precisar fazer nada
+        }
 
         return objectToArray($userEntity);
     }
