@@ -33,7 +33,7 @@ class User extends Model
     }
 
     /**
-     * @return array
+     * @return Entities\User[]
      *
      * @throws NotFoundException
      */
