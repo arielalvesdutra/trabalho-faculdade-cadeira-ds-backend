@@ -47,6 +47,28 @@ class UserProfile extends Model
         return $entities;
     }
 
+    public function findUserProfilesByUserId($userId)
+    {
+        $query = "SELECT up.code, up.name " .
+                 "FROM " . $this->getTableName() . " as up " .
+                 "INNER JOIN users_user_profiles as uup" .
+                 "ON uup.id_user = :user_id " .
+                 "WHERE uup.id_user_profile = up.id";
+
+        $stm = $this->getPdo()->prepare($query);
+        $stm->bindParam(":user_id", $userId);
+        $stm->execute();
+        $stm->setFetchMode(PDO::FETCH_CLASS, 'App\Entities\UserProfile');
+        $entities = $stm->fetchAll();
+
+        if (empty($entities)) {
+            throw new NotFoundException("Nenhum registro encontrado");
+        }
+
+        return $entities;
+
+    }
+
     /**
      * @return Entities\UserProfile
      *
