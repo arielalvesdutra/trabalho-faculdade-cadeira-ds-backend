@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entities;
+namespace App\Entities\UserProfiles;
 
+use App\Entities\Entity;
 use DomainException;
-use InvalidArgumentException;
 
 /**
  * Classe de Perfil de Usuário
@@ -11,7 +11,7 @@ use InvalidArgumentException;
  * Class UserProfile
  * @package App\Entities\UserProfiles
  */
-class UserProfile extends Entity
+abstract class UserProfile extends Entity
 {
     /**
      * @var string $code
@@ -46,35 +46,5 @@ class UserProfile extends Entity
         }
 
         throw new DomainException('Nome de perfil de usuário não configurado.');
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return $this
-     */
-    public function setCode(string $code)
-    {
-        if(!empty($code)) {
-            $this->code = $code;
-            return $this;
-        }
-
-        throw new InvalidArgumentException('Parametro código é inválido.');
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName(string $name)
-    {
-        if(!empty($name)) {
-            $this->name = $name;
-            return $this;
-        }
-
-        throw new InvalidArgumentException('Parametro nome é inválido.');
     }
 }
