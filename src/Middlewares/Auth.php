@@ -54,7 +54,7 @@ class Auth
      *
      * @return mixed
      */
-    public function sigIn(ServerRequestInterface $request, ResponseInterface $response)
+    public function signIn(ServerRequestInterface $request, ResponseInterface $response)
     {
 
         $parameters = $request->getParsedBody();
@@ -78,7 +78,7 @@ class Auth
             $payload = [
                 'id' => $userEntity->getId(),
                 'name'  => $userEntity->getName(),
-                'email'  => $userEntity->getName(),
+                'email'  => $userEntity->getEmail(),
                 'iet' => time(),
                 'exp' => $this->getTimestamp10MinutesForward()
             ];
