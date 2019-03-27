@@ -3,6 +3,7 @@
 require '../bootstrap.php';
 
 use App\Controllers;
+use App\Middlewares\AccessControlAllow;
 use App\Middlewares\Auth;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -31,6 +32,8 @@ $container[Controllers\User::class] = function ()
 };
 
 /**
+ * Injeta as dependências da controller UserProfile
+ *
  * @return Controllers\UserProfile
  */
 $container[Controllers\UserProfile::class] = function ()
@@ -62,6 +65,20 @@ $container->get('settings')
 $slim = new App($container);
 
 /**
+ * Configuração referente ao CORS
+ * @see https://www.slimframework.com/docs/v3/cookbook/enable-cors.html
+ */
+$slim->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
+
+/**
+ * Configuração referente ao CORS
+ * @see https://www.slimframework.com/docs/v3/cookbook/enable-cors.html
+ */
+$slim->add(new AccessControlAllow());
+
+/**
  * Rotas
  */
 
@@ -72,12 +89,12 @@ $slim->get('/', function (RequestInterface $request, ResponseInterface $response
 /**
  * Autenticação
  */
-$slim->post('/sigin', Auth::class . ':sigIn');
+$slim->post('/signin', Auth::class . ':signIn');
 
 /**
  * Users
  */
-$slim->get('/users', Controllers\User::class . ':retrieveAll');
+$slim->get('/users[/]', Controllers\User::class . ':retrieveAll');
 $slim->get('/users/{id}', Controllers\User::class . ':retrieve');
 $slim->post('/users', Controllers\User::class . ':create');
 
