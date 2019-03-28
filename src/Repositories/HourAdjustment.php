@@ -6,10 +6,9 @@ use App\Databases\Factories\Connections\DefaultDatabaseConnection;
 use App\Exceptions\NotFoundException;
 use App\Factories\Entities\HourAdjustmentEntityFactory;
 use App\Models;
-use Exception;
 
 /**
- * Repository de Usuários
+ * Repository de Ajustes de Horas
  *
  * Class HourAdjusment
  * @package App\Repositories
