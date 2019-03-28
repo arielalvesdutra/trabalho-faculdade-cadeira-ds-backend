@@ -13,30 +13,30 @@ use InvalidArgumentException;
 class Justification extends Entity
 {
     /**
-     * @var string $name
+     * @var string $title
      */
-    protected $name;
+    protected $title;
 
     /**
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
-     * @param string $name
+     * @param string $title
      *
      * @return $this
      */
-    public function setName(string $name)
+    public function setTitle(string $title)
     {
-        if (!empty($name)) {
-            $this->name = $name;
+        if (!empty($title)) {
+            $this->title = $title;
             return $this;
         }
 
-        throw new InvalidArgumentException('O parametro nome é inválido.');
+        throw new InvalidArgumentException('O parametro title é inválido.');
     }
 }
