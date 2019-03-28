@@ -23,6 +23,5 @@ class AccessControlAllow
             ->withHeader('Access-Control-Allow-Headers', '*')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD');
     }
-
 }
 
