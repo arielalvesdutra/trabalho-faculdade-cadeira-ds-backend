@@ -69,7 +69,26 @@ class Justification extends Model
 
         $stm = $this->getPdo()->prepare($query);
         $stm->bindParam(':id', $id);
+        $stm->execute();
+        $stm->setFetchMode(PDO::FETCH_CLASS, 'App\Entities\Justification');
 
+        $entity = $stm->fetch();
+
+        if (empty($entity)) {
+            throw new NotFoundException("Nenhum registro encontrado");
+        }
+
+        return $entity;
+    }
+
+    public function findByTitle(string $title)
+    {
+        $query = "SELECT * FROM " . $this->getTableName() . " ".
+            "WHERE title = :title";
+
+        $stm = $this->getPdo()->prepare($query);
+        $stm->bindParam(':title', $title);
+        $stm->execute();
         $stm->setFetchMode(PDO::FETCH_CLASS, 'App\Entities\Justification');
 
         $entity = $stm->fetch();
