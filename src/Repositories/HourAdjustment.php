@@ -13,7 +13,7 @@ use App\Models;
  * Class HourAdjusment
  * @package App\Repositories
  */
-class HourAdjusment
+class HourAdjustment
 {
     /**
      * @var Models\User $model

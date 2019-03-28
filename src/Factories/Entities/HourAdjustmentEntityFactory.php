@@ -36,7 +36,7 @@ class HourAdjustmentEntityFactory
         $duration = $exitHourDateTime->diff($entryHourDateTime);
 
         return (new Entities\HourAdjustment($id))
-                ->setDate(new DateTime($dateTime))
+                ->setDate($dateTime)
                 ->setEntryHour($entryHourDateTime)
                 ->setExitHour($exitHourDateTime)
                 ->setDuration($duration)
