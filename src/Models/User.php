@@ -55,6 +55,32 @@ class User extends Model
     }
 
     /**
+     * @param $id
+     *
+     * @return Entities\User
+     *
+     * @throws NotFoundException
+     */
+    public function findById($id)
+    {
+        $query = "SELECT * FROM " . $this->getTableName() . " ".
+            "WHERE id = :id";
+
+        $stm = $this->getPdo()->prepare($query);
+        $stm->bindParam(':id', $id);
+
+        $stm->setFetchMode(PDO::FETCH_CLASS, 'App\Entities\User');
+
+        $entity = $stm->fetch();
+
+        if (empty($entity)) {
+            throw new NotFoundException("Nenhum registro encontrado");
+        }
+
+        return $entity;
+    }
+
+    /**
      * @return Entities\User
      *
      * @throws NotFoundException
