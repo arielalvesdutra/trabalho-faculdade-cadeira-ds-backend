@@ -2,8 +2,9 @@
 
 namespace App\Middlewares;
 
-use App\Models;
 use App\Databases\Factories\Connections\DefaultDatabaseConnection;
+use App\Models;
+use App\Repositories;
 use Exception;
 use Firebase\JWT\JWT;
 use InvalidArgumentException;
@@ -66,19 +67,22 @@ class Auth
             $email = $this->getEmailRequestParameter($parameters);
             $password = $this->getPasswordRequestParameter($parameters);
 
-            $userModel = new Models\User(
-                DefaultDatabaseConnection::getConnection()
+            $userRepository = new Repositories\User(
+                new Models\User(
+                    DefaultDatabaseConnection::getConnection()
+                )
             );
 
-            $userEntity = $userModel->addFilters([
-                "email like '" => $email . "'",
-                "password like '" => $password . "'"
-            ])->findFirst();
+            $user = $userRepository->retrieveUserByEmailAndPassword([
+                'email' => $email ,
+                'password' => $password
+            ]);
 
             $payload = [
-                'id' => $userEntity->getId(),
-                'name'  => $userEntity->getName(),
-                'email'  => $userEntity->getEmail(),
+                'id' => $user['id'],
+                'name'  => $user['name'],
+                'email'  => $user['email'],
+                'userProfiles' => $user['userProfiles'],
                 'iet' => time(),
                 'exp' => $this->getTimestamp10MinutesForward()
             ];
@@ -90,9 +94,8 @@ class Auth
                 'token' => $token
             ]);
 
-
         } catch (Exception $exception) {
-            return $response->withJson('Erro: ' . $exception->getMessage());
+            return $response->withJson('Email ou senha inválido!', 400);
         }
     }
 
