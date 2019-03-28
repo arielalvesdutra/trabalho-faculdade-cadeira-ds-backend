@@ -127,6 +127,37 @@ class User
     }
 
     /**
+     * @param array $parameters
+     *
+     * @return array
+     *
+     * @throws NotFoundException
+     */
+    public function retrieveUserByEmailAndPassword(array $parameters)
+    {
+        if (empty($parameters['email'])) {
+            throw new Exception('Email está vazio');
+        }
+
+        if (empty($parameters['password'])) {
+            throw new Exception('Senha está vazia');
+        }
+
+        $userProfileModel = new Models\UserProfile(DefaultDatabaseConnection::getConnection());
+
+        $userEntity = $this->model->addFilters([
+            "email = '" => $parameters['email'] ."'",
+            "password = '" => $parameters['password'] ."'"
+        ])->findFirst();
+
+        $userEntity->addProfiles(
+            $userProfileModel->findUserProfilesByUserId($userEntity->getId())
+        );
+
+        return objectToArray($userEntity);
+    }
+
+    /**
      * Método para adicionar "_tests" na tabela de model da repository
      * para que a model interfira nos dados de um tabela de testes
      */
