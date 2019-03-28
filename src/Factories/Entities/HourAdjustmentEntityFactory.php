@@ -18,6 +18,7 @@ class HourAdjustmentEntityFactory
      * @param string $entryHour
      * @param string $exitHour
      * @param Entities\Justification $justification
+     * @param Entities\User $user
      * @param int|null $id
      *
      * @return Entities\HourAdjustment
@@ -25,7 +26,8 @@ class HourAdjustmentEntityFactory
      * @throws \Exception
      */
     public static function create(string $date, string $entryHour, string $exitHour,
-                                  Entities\Justification $justification, int $id = null): Entities\HourAdjustment
+                                  Entities\Justification $justification,
+                                  Entities\User $user, int $id = null): Entities\HourAdjustment
     {
 
         $dateTime = new DateTime($date);
@@ -38,6 +40,7 @@ class HourAdjustmentEntityFactory
                 ->setEntryHour($entryHourDateTime)
                 ->setExitHour($exitHourDateTime)
                 ->setDuration($duration)
-                ->setJustification($justification);
+                ->setJustification($justification)
+                ->setUserId($user->getId());
     }
 }

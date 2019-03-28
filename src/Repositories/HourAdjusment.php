@@ -30,9 +30,18 @@ class HourAdjusment
         $this->model = $model;
     }
 
+    /**
+     * @param array $parameters
+     *
+     * @throws NotFoundException
+     */
     public function createHourAdjustment(array $parameters)
     {
         $justificationModel = new Models\Justification(
+            DefaultDatabaseConnection::getConnection()
+        );
+
+        $userModel = new Models\User(
             DefaultDatabaseConnection::getConnection()
         );
 
@@ -40,7 +49,8 @@ class HourAdjusment
             $parameters['date'],
             $parameters['entryHour'],
             $parameters['exitHour'],
-            $justificationModel->findById([$parameters['id_justification'],]),
+            $justificationModel->findById($parameters['id_justification']),
+            $userModel->findById($parameters['id_user'])
         );
 
         $this->model->save($hourAdjustmentEntity);

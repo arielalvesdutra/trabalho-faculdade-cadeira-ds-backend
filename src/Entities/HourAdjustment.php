@@ -39,6 +39,11 @@ class HourAdjustment extends Entity
     protected $justification;
 
     /**
+     * @var int $userId
+     */
+    protected $userId;
+
+    /**
      * @return DateTime
      */
     public function getDate()
@@ -76,6 +81,14 @@ class HourAdjustment extends Entity
     public function getJustification()
     {
         return $this->justification;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUserId()
+    {
+        return $this->userId;
     }
 
     /**
@@ -130,6 +143,17 @@ class HourAdjustment extends Entity
     public function setJustification(Justification $justification)
     {
         $this->justification = $justification;
+        return $this;
+    }
+
+    /**
+     * @param int $userId
+     *
+     * @return HourAdjustment
+     */
+    public function setUserId(int $userId)
+    {
+        $this->userId = $userId;
         return $this;
     }
 }

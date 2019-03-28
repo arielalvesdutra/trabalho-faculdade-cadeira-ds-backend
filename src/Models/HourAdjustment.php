@@ -95,8 +95,8 @@ class HourAdjustment extends Model
     public function save($entity)
     {
         $query = "INSERT INTO " . $this->getTableName() ." " .
-                 "(date, duration, entryHour, exitHour, id_justification) VALUES ".
-                 "(:date, :duration, :entryHour, :exitHour, :id_justification)";
+                 "(date, duration, entryHour, exitHour, id_justification, id_user) VALUES ".
+                 "(:date, :duration, :entryHour, :exitHour, :id_justification, :id_user)";
 
         $stm = $this->getPdo()->prepare($query);
         $stm->bindParam(':date', $entity->getDate()->format('Y-m-d'));
@@ -104,6 +104,7 @@ class HourAdjustment extends Model
         $stm->bindParam(':exitHour', $entity->getExitHour()->format('H:i:s'));
         $stm->bindParam(':duration', $entity->getDuration()->format('%h:%I:%S'));
         $stm->bindParam(':id_justification', $entity->getJustification()->getId());
+        $stm->bindParam(':id_user', $entity->getUserId());
 
         $id = $stm->execute();
 
@@ -117,7 +118,7 @@ class HourAdjustment extends Model
     {
         $query = "UPDATE " . $this->getTableName() . " " .
                  "SET date = :date, entryHour = :entryHour, exitHour = :exitHour," .
-                    "duration = :duration, id_justification = :id_justification " .
+                    "duration = :duration, id_justification = :id_justification, id_user = :id_user " .
                  "WHERE id = :id";
 
         $stm = $this->getPdo()->prepare($query);
@@ -127,6 +128,7 @@ class HourAdjustment extends Model
         $stm->bindParam(':exitHour', $entity->getExitHour()->format('H:i:s'));
         $stm->bindParam(':duration', $entity->getDuration()->format('%h:%I:%S'));
         $stm->bindParam(':id_justification', $entity->getJustification()->getId());
+        $stm->bindParam(':id_user', $entity->getUserId());
 
         $stm->execute();
     }
