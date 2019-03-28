@@ -68,7 +68,7 @@ class User extends Model
 
         $stm = $this->getPdo()->prepare($query);
         $stm->bindParam(':id', $id);
-
+        $stm->execute();
         $stm->setFetchMode(PDO::FETCH_CLASS, 'App\Entities\User');
 
         $entity = $stm->fetch();
