@@ -19,7 +19,7 @@ class HourAdjustment extends Model
     /**
      * @var string $tableName
      */
-    protected $tableName = "hours_adjusments";
+    protected $tableName = "hours_adjustments";
 
 
     public function addFilters(array $filters)
