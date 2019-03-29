@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Entities;
 use App\Exceptions\NotFoundException;
+use App\Factories\Entities\HourAdjustmentEntityFactory;
 use LogicException;
 use PDO;
 use PDOStatement;
@@ -69,7 +70,7 @@ class HourAdjustment extends Model
 
         $stm = $this->getPdo()->prepare($query);
         $stm->bindParam(':id', $id);
-
+        $stm->execute();
         $stm->setFetchMode(PDO::FETCH_CLASS, 'App\Entities\HourAdjustment');
 
         $entity = $stm->fetch();
@@ -79,6 +80,26 @@ class HourAdjustment extends Model
         }
 
         return $entity;
+    }
+
+    public function findAdjustmentsByUserId($userId)
+    {
+        $query = "SELECT * FROM " . $this->getTableName() . " ".
+            "WHERE id_user = :id_user";
+
+        $stm = $this->getPdo()->prepare($query);
+        $stm->bindParam(':id_user', $userId);
+        $stm->execute();
+
+        $records = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+        $entities = HourAdjustmentEntityFactory::createFromArrayOfAdjustments($records);
+
+        if (empty($entities)) {
+            throw new NotFoundException("Nenhum registro encontrado");
+        }
+
+        return $entities;
     }
 
     public function findFirst()
