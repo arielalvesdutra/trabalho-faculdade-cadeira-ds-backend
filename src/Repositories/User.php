@@ -6,6 +6,7 @@ use App\Databases\Factories\Connections\DefaultDatabaseConnection;
 use App\Exceptions\NotFoundException;
 use App\Factories\Entities\UserEntityFactory;
 use App\Factories\Entities\UserProfileEntityFactory;
+use App\Formatters\Formatter;
 use App\Models;
 use Exception;
 
@@ -100,7 +101,7 @@ class User
             }
         }
 
-        return objectToArray($users);
+        return Formatter::fromObjectToArray($users);
     }
     /**
      * @param $id
@@ -123,7 +124,7 @@ class User
             // não precisar fazer nada
         }
 
-        return objectToArray($userEntity);
+        return Formatter::fromObjectToArray($userEntity);
     }
 
     /**
@@ -154,7 +155,7 @@ class User
             $userProfileModel->findUserProfilesByUserId($userEntity->getId())
         );
 
-        return objectToArray($userEntity);
+        return Formatter::fromObjectToArray($userEntity);
     }
 
     /**

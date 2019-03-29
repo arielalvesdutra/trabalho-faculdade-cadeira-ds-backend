@@ -5,7 +5,11 @@ namespace App\Formatters;
 
 class Formatter
 {
-    /**
+
+     /**
+     * Converte atributos publicos e protegidos de um objeto
+     * para um array
+     *
      * @param $data
      *
      * @return array

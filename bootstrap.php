@@ -42,42 +42,6 @@ function debugd()
 }
 
 /**
- * Converte atributos publicos e protegidos de um objeto
- * para um array
- *
- * @param $data
- *
- * @return array
- */
-function objectToArray($data)
-{
-    if (is_array($data)) {
-        $result = [];
-
-        foreach ($data as $key => $element) {
-            $result[$key] = objectToArray($element);
-        }
-
-        return $result;
-    }
-
-    if (is_object($data)) {
-
-        $result = [];
-        $array = (array) $data;
-
-        foreach ($array as $key => $element) {
-            $formattedKey = str_replace(["*", "\0"],'', $key);
-            $result[$formattedKey] = objectToArray($element);
-        }
-
-        return $result;
-    }
-
-    return $data;
-}
-
-/**
  * Método para setar os valores do arquivo .env na execução do PHP
  */
 function setOnExecutionTimeEnvFileValues()

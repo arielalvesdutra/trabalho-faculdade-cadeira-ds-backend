@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Formatters\Formatter;
 use Firebase\JWT\JWT;
 
 /**
@@ -24,7 +25,9 @@ abstract class Controller
         $secret = $this->getSecret();
         $tokenWithoutBearer = $this->removeBearerFromToken($token);
 
-        $payload = objectToArray(JWT::decode($tokenWithoutBearer, $secret, $algorithms));
+        $payload = Formatter::fromObjectToArray(
+            JWT::decode($tokenWithoutBearer, $secret, $algorithms)
+        );
 
         return $payload;
     }
