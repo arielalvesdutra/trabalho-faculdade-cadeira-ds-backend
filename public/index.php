@@ -152,6 +152,8 @@ $slim->group('', function() use ($slim) {
     /**
      * HoursAdjustments
      */
+    $slim->get('/hours-adjustments/employee/{id}',
+        Controllers\HourAdjustment::class . ':retrieveEmployeeAdjustments');
     $slim->post('/hours-adjustments', Controllers\HourAdjustment::class . ':create');
 
     /**
