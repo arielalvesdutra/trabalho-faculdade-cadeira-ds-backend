@@ -3,9 +3,12 @@
 namespace App\Repositories;
 
 use App\Databases\Factories\Connections\DefaultDatabaseConnection;
+use App\Entities;
 use App\Exceptions\NotFoundException;
 use App\Factories\Entities\HourAdjustmentEntityFactory;
+use App\Formatters\HourAdjustmentFormatter;
 use App\Models;
+use OutOfRangeException;
 
 /**
  * Repository de Ajustes de Horas
@@ -16,7 +19,7 @@ use App\Models;
 class HourAdjustment
 {
     /**
-     * @var Models\User $model
+     * @var Models\HourAdjustment $model
      */
     protected $model;
 
@@ -48,11 +51,44 @@ class HourAdjustment
             $parameters['date'],
             $parameters['entryHour'],
             $parameters['exitHour'],
-            $justificationModel->findById($parameters['id_justification']),
-            $userModel->findById($parameters['id_user'])
+            $justificationModel->findById($parameters['justification']['id']),
+            $userModel->findById($parameters['userId'])
         );
 
         $this->model->save($hourAdjustmentEntity);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return array
+     *
+     * @throws NotFoundException
+     * @throws OutOfRangeException
+     */
+    public function retrieveEmployeeAdjustments(array $parameters)
+    {
+        $userModel = new Models\User(
+            DefaultDatabaseConnection::getConnection()
+        );
+
+        $userProfilesModel = new Models\UserProfile(
+            DefaultDatabaseConnection::getConnection()
+        );
+
+        $userEntity = $userModel->findById($parameters['id_user']);
+
+        $userEntity->addProfiles(
+            $userProfilesModel->findUserProfilesByUserId($userEntity->getId())
+        );
+
+        $employeeEntity = new Entities\UserProfiles\Employee();
+
+        $userEntity->getProfile($employeeEntity->getCode());
+
+        $hoursAdjustments = $this->model->findAdjustmentsByUserId($userEntity->getId());
+
+        return HourAdjustmentFormatter::fromEntityArrayToControllerArray($hoursAdjustments);
     }
 
     /**
