@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Exceptions\ForbiddenException;
 use App\Repositories;
 use Exception;
 use Firebase\JWT\JWT;
@@ -26,6 +27,12 @@ class HourAdjustment extends Controller
         $this->repository = $repository;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     *
+     * @return ResponseInterface
+     */
     public function create(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
@@ -35,9 +42,7 @@ class HourAdjustment extends Controller
 
             $payload = $this->decodeToken($token);
 
-            $parameters['id_user'] = $payload['id'];
-
-//            debugd($parameters);
+            $parameters['userId'] = $payload['id'];
 
             $this->repository->createHourAdjustment($parameters);
 
@@ -45,6 +50,38 @@ class HourAdjustment extends Controller
 
         } catch (Exception $exception) {
             return $response->withJson($exception->getMessage(), 400);
+        }
+    }
+
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     *
+     * @return ResponseInterface
+     */
+    public function retrieveEmployeeAdjustments(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        try {
+
+            $userId = $request->getAttribute('id');
+
+            $token = $request->getHeaderLine('Authorization');
+
+            $payload = $this->decodeToken($token);
+
+            $parameters['id_user'] = $payload['id'];
+
+            if ($userId !== $parameters['id_user']) {
+                throw new ForbiddenException('Usuário não autorizado.');
+            }
+
+            $hoursAdjustments = $this->repository->retrieveEmployeeAdjustments($parameters);
+
+            return $response->withJson($hoursAdjustments, 200);
+
+        } catch (Exception $exception) {
+            return $response->withJson($exception->getMessage(), $exception->getCode());
         }
     }
 }
