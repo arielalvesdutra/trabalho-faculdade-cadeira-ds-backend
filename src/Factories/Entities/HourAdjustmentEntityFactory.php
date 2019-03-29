@@ -51,4 +51,31 @@ class HourAdjustmentEntityFactory
                 ->setJustification($justification)
                 ->setUserId($user->getId());
     }
+
+    /**
+     * @param array $adjustments
+     *
+     * @return array
+     *
+     * @throws \Exception
+     */
+    public static function createFromArrayOfAdjustments(array $adjustments)
+    {
+
+        $adjustmentArray = [];
+
+        foreach ($adjustments as $adjustment) {
+
+            $adjustmentArray[] = HourAdjustmentEntityFactory::create(
+                $adjustment['date'],
+                $adjustment['entryHour'],
+                $adjustment['exitHour'],
+                new Entities\Justification($adjustment['id_justification']),
+                new Entities\User($adjustment['id_user']),
+                (int) $adjustment['id']
+            );
+        }
+
+        return $adjustmentArray;
+    }
 }
