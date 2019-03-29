@@ -3,6 +3,7 @@ namespace App\Factories\Entities;
 
 use App\Entities;
 use DateTime;
+use DomainException;
 
 /**
  *
@@ -33,6 +34,13 @@ class HourAdjustmentEntityFactory
         $dateTime = new DateTime($date);
         $entryHourDateTime = new DateTime($date . " " .$entryHour);
         $exitHourDateTime = new DateTime($date . " " .$exitHour);
+
+        if ($entryHourDateTime->getTimestamp() >
+            $exitHourDateTime->getTimestamp()
+        ) {
+            throw new DomainException('O registro de entrada é maior que o registro de saída.');
+        }
+
         $duration = $exitHourDateTime->diff($entryHourDateTime);
 
         return (new Entities\HourAdjustment($id))
