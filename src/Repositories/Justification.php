@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Entities;
 use App\Exceptions\NotFoundException;
+use App\Formatters\Formatter;
 use App\Models;
 use Exception;
 
@@ -31,6 +32,8 @@ class Justification
 
     /**
      * @param array $parameters
+     *
+     * @throws Exception
      */
     public function createJustification(array $parameters)
     {
@@ -50,6 +53,14 @@ class Justification
 
             $this->model->save($justificationEntity);
         }
+    }
+
+    public function retrieveAllJustifications()
+    {
+
+        $justificationEntities = $this->model->findAll();
+
+        return Formatter::fromObjectToArray($justificationEntities);
     }
 
     /**
