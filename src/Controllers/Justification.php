@@ -41,4 +41,17 @@ class Justification extends Controller
             return $response->withJson($exception->getMessage(), 400);
         }
     }
+
+    public function retrieveAll(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        try {
+
+            $justifications = $this->repository->retrieveAllJustifications();
+
+            return $response->withJson($justifications, 200);
+
+        } catch (Exception $exception) {
+            return $response->withJson($exception->getMessage(), 400);
+        }
+    }
 }
