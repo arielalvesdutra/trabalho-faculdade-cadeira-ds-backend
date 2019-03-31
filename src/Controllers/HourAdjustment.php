@@ -48,7 +48,7 @@ class HourAdjustment extends Controller
             return $response->withStatus(201);
 
         } catch (Exception $exception) {
-            return $response->withJson($exception->getMessage(), 400);
+            return $response->withJson($exception->getMessage(), $exception->getCode());
         }
     }
 
@@ -99,6 +99,25 @@ class HourAdjustment extends Controller
             $hoursAdjustments = $this->repository->retrieveEmployeeAdjustments($parameters);
 
             return $response->withJson($hoursAdjustments, 200);
+
+        } catch (Exception $exception) {
+            return $response->withJson($exception->getMessage(), $exception->getCode());
+        }
+    }
+
+    public function update(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        try {
+            $token = $request->getHeaderLine('Authorization');
+            $payload = $this->decodeToken($token);
+
+            $parameters = $request->getParsedBody();
+            $parameters['id_adjustment'] = $request->getAttribute('id');
+            $parameters['id_user'] =  $payload['id'];
+
+            $this->repository->updateHourAdjustment($parameters);
+
+            return $response->withStatus(200);
 
         } catch (Exception $exception) {
             return $response->withJson($exception->getMessage(), $exception->getCode());
