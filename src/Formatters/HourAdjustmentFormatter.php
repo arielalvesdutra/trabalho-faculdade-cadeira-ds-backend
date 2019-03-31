@@ -21,6 +21,7 @@ class HourAdjustmentFormatter extends Formatter
                 'date' => $entity->getDate()->format('Y-m-d'),
                 'entryHour' => $entity->getEntryHour()->format('H:i:s'),
                 'exitHour' => $entity->getExitHour()->format('H:i:s'),
+                'duration' => $entity->getDuration()->format('%h:%I'),
                 'justification' =>  [
                   'id' => $entity->getJustification()->getId()
                 ],
