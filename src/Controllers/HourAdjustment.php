@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Exceptions\ForbiddenException;
 use App\Repositories;
 use Exception;
-use Firebase\JWT\JWT;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -53,6 +52,27 @@ class HourAdjustment extends Controller
         }
     }
 
+    public function delete(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        try {
+
+            $parameters['id_adjustment'] = $request->getAttribute('id');
+
+            $token = $request->getHeaderLine('Authorization');
+
+            $payload = $this->decodeToken($token);
+
+            $parameters['id_user'] = $payload['id'];
+
+            $this->repository->deleteHourAdjustment($parameters);
+
+            return $response->withStatus(200);
+
+        } catch (Exception $exception) {
+
+            return $response->withJson($exception->getMessage(), $exception->getCode());
+        }
+    }
 
     /**
      * @param ServerRequestInterface $request
