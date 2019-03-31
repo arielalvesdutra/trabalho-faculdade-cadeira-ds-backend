@@ -70,7 +70,7 @@ class HourAdjustment
         $adjustmentEntity = $this->model->findById($parameters['id_adjustment']);
 
         if ($adjustmentEntity->getUserId() != (int)$parameters['id_user']) {
-            throw new ForbiddenException(debugd($adjustmentEntity, $parameters));
+            throw new ForbiddenException('Sem permissão para excluir o ajuste.');
         }
 
         $this->model->delete($adjustmentEntity->getId());
@@ -107,6 +107,41 @@ class HourAdjustment
         $hoursAdjustments = $this->model->findAdjustmentsByUserId($userEntity->getId());
 
         return HourAdjustmentFormatter::fromEntityArrayToControllerArray($hoursAdjustments);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     */
+    public function updateHourAdjustment(array $parameters)
+    {
+
+        $justificationModel = new Models\Justification(
+            DefaultDatabaseConnection::getConnection()
+        );
+
+        $userModel = new Models\User(
+            DefaultDatabaseConnection::getConnection()
+        );
+
+        $fetchEntity = $this->model->findById($parameters['id_adjustment']);
+
+        if ($fetchEntity->getUserId() != (int)$parameters['id_user']) {
+            throw new ForbiddenException('Sem permissão para atualizar o ajuste.');
+        }
+
+        $adjustmentEntity = HourAdjustmentEntityFactory::create(
+            $parameters['date'],
+            $parameters['entryHour'],
+            $parameters['exitHour'],
+            $justificationModel->findById($parameters['justification']['id']),
+            $userModel->findById($parameters['id_user']),
+            $parameters['id_adjustment']
+        );
+
+        $this->model->update($adjustmentEntity);
     }
 
     /**
