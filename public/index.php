@@ -152,6 +152,7 @@ $slim->group('', function() use ($slim) {
     /**
      * HoursAdjustments
      */
+    $slim->delete('/hours-adjustments/{id}', Controllers\HourAdjustment::class . ':delete');
     $slim->get('/hours-adjustments/employee/{id}',
         Controllers\HourAdjustment::class . ':retrieveEmployeeAdjustments');
     $slim->post('/hours-adjustments', Controllers\HourAdjustment::class . ':create');
@@ -159,6 +160,7 @@ $slim->group('', function() use ($slim) {
     /**
      * Justifications
      */
+    $slim->get('/justifications', Controllers\Justification::class . ':retrieveAll');
     $slim->post('/justifications', Controllers\Justification::class . ':create');
 
     /**
