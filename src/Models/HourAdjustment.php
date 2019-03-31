@@ -71,9 +71,17 @@ class HourAdjustment extends Model
         $stm = $this->getPdo()->prepare($query);
         $stm->bindParam(':id', $id);
         $stm->execute();
-        $stm->setFetchMode(PDO::FETCH_CLASS, 'App\Entities\HourAdjustment');
 
-        $entity = $stm->fetch();
+        $record = $stm->fetch(PDO::FETCH_ASSOC);
+
+        $entity = HourAdjustmentEntityFactory::create(
+            $record['date'],
+            $record['entryHour'],
+            $record['exitHour'],
+            new Entities\Justification($record['id_justification']),
+            new Entities\User($record['id_user']),
+            $record['id']
+        );
 
         if (empty($entity)) {
             throw new NotFoundException("Nenhum registro encontrado");
