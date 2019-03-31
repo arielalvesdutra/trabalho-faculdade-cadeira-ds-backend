@@ -147,7 +147,7 @@ class HourAdjustment extends Model
     {
         $query = "UPDATE " . $this->getTableName() . " " .
                  "SET date = :date, entryHour = :entryHour, exitHour = :exitHour," .
-                    "duration = :duration, id_justification = :id_justification, id_user = :id_user " .
+                    "duration = :duration, id_justification = :id_justification " .
                  "WHERE id = :id";
 
         $stm = $this->getPdo()->prepare($query);
@@ -157,7 +157,6 @@ class HourAdjustment extends Model
         $stm->bindParam(':exitHour', $entity->getExitHour()->format('H:i:s'));
         $stm->bindParam(':duration', $entity->getDuration()->format('%h:%I:%S'));
         $stm->bindParam(':id_justification', $entity->getJustification()->getId());
-        $stm->bindParam(':id_user', $entity->getUserId());
 
         $stm->execute();
     }
