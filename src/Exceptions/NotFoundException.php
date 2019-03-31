@@ -10,5 +10,5 @@ use Exception;
  */
 class NotFoundException extends Exception
 {
-    protected $code = 400;
+    protected $code = 404;
 }
