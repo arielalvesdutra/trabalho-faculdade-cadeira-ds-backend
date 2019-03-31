@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Databases\Factories\Connections\DefaultDatabaseConnection;
 use App\Entities;
+use App\Exceptions\ForbiddenException;
 use App\Exceptions\NotFoundException;
 use App\Factories\Entities\HourAdjustmentEntityFactory;
 use App\Formatters\HourAdjustmentFormatter;
@@ -56,6 +57,23 @@ class HourAdjustment
         );
 
         $this->model->save($hourAdjustmentEntity);
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @throws ForbiddenException
+     * @throws NotFoundException
+     */
+    public function deleteHourAdjustment(array $parameters)
+    {
+        $adjustmentEntity = $this->model->findById($parameters['id_adjustment']);
+
+        if ($adjustmentEntity->getUserId() != (int)$parameters['id_user']) {
+            throw new ForbiddenException(debugd($adjustmentEntity, $parameters));
+        }
+
+        $this->model->delete($adjustmentEntity->getId());
     }
 
     /**
