@@ -156,6 +156,7 @@ $slim->group('', function() use ($slim) {
     $slim->get('/hours-adjustments/employee/{id}',
         Controllers\HourAdjustment::class . ':retrieveEmployeeAdjustments');
     $slim->post('/hours-adjustments', Controllers\HourAdjustment::class . ':create');
+    $slim->put('/hours-adjustments/{id}', Controllers\HourAdjustment::class . ':update');
 
     /**
      * Justifications
