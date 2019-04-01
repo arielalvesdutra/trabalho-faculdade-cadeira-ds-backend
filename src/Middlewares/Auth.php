@@ -151,12 +151,22 @@ class Auth
         throw new Exception('Secret não está configurado!');
     }
 
+    private function getTimestamp30SecondsForward()
+    {
+        return time() + (30);
+    }
+
     /**
      * @return int
      */
     private function getTimestamp10MinutesForward()
     {
         return time() + (60 * 10);
+    }
+
+    private function getTimestamp60MinutesForward()
+    {
+        return time() + (60 * 60);
     }
 
     /**
