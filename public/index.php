@@ -155,7 +155,10 @@ $slim->group('', function() use ($slim) {
     $slim->delete('/hours-adjustments/{id}', Controllers\HourAdjustment::class . ':delete');
     $slim->get('/hours-adjustments/employee/{id}',
         Controllers\HourAdjustment::class . ':retrieveEmployeeAdjustments');
+    $slim->get('/hours-adjustments/employee/{id}/status',
+        Controllers\HourAdjustment::class . ':retrieveEmployeeAdjustmentsStatus');
     $slim->post('/hours-adjustments', Controllers\HourAdjustment::class . ':create');
+    $slim->post('/hours-adjustments/approval-request', Controllers\HourAdjustment::class . ":approvalRequest" );
     $slim->put('/hours-adjustments/{id}', Controllers\HourAdjustment::class . ':update');
 
     /**
