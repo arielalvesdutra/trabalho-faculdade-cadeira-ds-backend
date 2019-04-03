@@ -49,7 +49,7 @@ class Justification extends Model
         $entities = $stm->fetchAll();
 
         if (empty($entities)) {
-            throw new NotFoundException("Nenhum registro encontrado");
+            throw new NotFoundException("Nenhum registro de justificativa encontrado");
         }
 
         return $entities;
@@ -75,7 +75,7 @@ class Justification extends Model
         $entity = $stm->fetch();
 
         if (empty($entity)) {
-            throw new NotFoundException("Nenhum registro encontrado");
+            throw new NotFoundException("Nenhum registro de justificativa encontrado");
         }
 
         return $entity;
@@ -94,7 +94,7 @@ class Justification extends Model
         $entity = $stm->fetch();
 
         if (empty($entity)) {
-            throw new NotFoundException("Nenhum registro encontrado");
+            throw new NotFoundException("Nenhum registro de justificativa encontrado");
         }
 
         return $entity;
