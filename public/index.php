@@ -15,6 +15,40 @@ use Slim\Container;
  */
 $container = new Container();
 /**
+ * Injeta as dependências da controller HourAdjustment
+ *
+ * @return Controllers\HourAdjustment
+ */
+$container[Controllers\HourAdjustment::class] = function ()
+{
+    return new \App\Controllers\HourAdjustment(
+
+        new \App\Repositories\HourAdjustment(
+            new  \App\Models\HourAdjustment(
+                \App\Databases\Factories\Connections\DefaultDatabaseConnection::getConnection()
+            )
+        )
+    );
+};
+
+/**
+ * Injeta as dependências da controller Justification
+ *
+ * @return Controllers\Justification
+ */
+$container[Controllers\Justification::class] = function ()
+{
+    return new \App\Controllers\Justification(
+
+        new \App\Repositories\Justification(
+            new  \App\Models\Justification(
+                \App\Databases\Factories\Connections\DefaultDatabaseConnection::getConnection()
+            )
+        )
+    );
+};
+
+/**
  * Injeta as dependências da controller User
  *
  * @return Controllers\User
@@ -47,7 +81,6 @@ $container[Controllers\UserProfile::class] = function ()
         )
     );
 };
-
 
 /**
  * Define configuração de middleware e de debug
@@ -115,6 +148,24 @@ $slim->group('', function() use ($slim) {
     $slim->get('/te', function($request, $response){
         return $response->withJson("Teste");
     });
+
+    /**
+     * HoursAdjustments
+     */
+    $slim->delete('/hours-adjustments/{id}', Controllers\HourAdjustment::class . ':delete');
+    $slim->get('/hours-adjustments/employee/{id}',
+        Controllers\HourAdjustment::class . ':retrieveEmployeeAdjustments');
+    $slim->get('/hours-adjustments/employee/{id}/status',
+        Controllers\HourAdjustment::class . ':retrieveEmployeeAdjustmentsStatus');
+    $slim->post('/hours-adjustments', Controllers\HourAdjustment::class . ':create');
+    $slim->post('/hours-adjustments/approval-request', Controllers\HourAdjustment::class . ":approvalRequest" );
+    $slim->put('/hours-adjustments/{id}', Controllers\HourAdjustment::class . ':update');
+
+    /**
+     * Justifications
+     */
+    $slim->get('/justifications', Controllers\Justification::class . ':retrieveAll');
+    $slim->post('/justifications', Controllers\Justification::class . ':create');
 
     /**
      * Users

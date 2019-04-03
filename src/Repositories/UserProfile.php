@@ -23,9 +23,10 @@ class UserProfile
         $this->model = $model;
     }
 
-
     /**
      * @param array $parameters
+     *
+     * @throws Exception
      */
     public function createUserProfile(array $parameters)
     {
