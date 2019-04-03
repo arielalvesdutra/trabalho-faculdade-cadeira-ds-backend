@@ -90,13 +90,38 @@ class HourAdjustment extends Model
         return $entity;
     }
 
-    public function findAdjustmentsByUserId($userId)
+    public function findAdjustmentsByUserId($userId, $additionalFilters = [])
     {
         $query = "SELECT * FROM " . $this->getTableName() . " ".
             "WHERE id_user = :id_user";
 
+        if (!empty($additionalFilters['initDate'])) {
+            $query .= " AND date >= :initDate";
+        }
+
+        if (!empty($additionalFilters['endDate'])) {
+            $query .= " AND date <= :endDate";
+        }
+
+        if (!empty($additionalFilters['justificationId'])) {
+            $query .= " AND id_justification = :justificationId";
+        }
+
         $stm = $this->getPdo()->prepare($query);
         $stm->bindParam(':id_user', $userId);
+
+        if (!empty($additionalFilters['initDate'])) {
+            $stm->bindParam(':initDate', $additionalFilters['initDate']);
+        }
+
+        if (!empty($additionalFilters['endDate'])) {
+            $stm->bindParam(':endDate', $additionalFilters['endDate']);
+        }
+
+        if (!empty($additionalFilters['justificationId'])) {
+            $stm->bindParam(':justificationId', $additionalFilters['justificationId']);
+        }
+
         $stm->execute();
 
         $records = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -114,7 +139,6 @@ class HourAdjustment extends Model
     {
         throw new LogicException('Método não implementado');
     }
-
 
     /**
      * @param $entity Entities\HourAdjustment
