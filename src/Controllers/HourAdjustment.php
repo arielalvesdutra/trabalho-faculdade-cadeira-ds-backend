@@ -26,6 +26,24 @@ class HourAdjustment extends Controller
         $this->repository = $repository;
     }
 
+    public function approvalRequest(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        try {
+            $token = $request->getHeaderLine('Authorization');
+
+            $payload = $this->decodeToken($token);
+
+            $parameters['id_user'] = $payload['id'];
+
+            $this->repository->employeeApprovalRequest($parameters);
+
+            return $response->withStatus(200);
+
+        } catch (Exception $exception) {
+            return $response->withJson($exception->getMessage(), $exception->getCode());
+        }
+    }
+
     /**
      * @param ServerRequestInterface $request
      * @param ResponseInterface $response
@@ -99,6 +117,29 @@ class HourAdjustment extends Controller
             $hoursAdjustments = $this->repository->retrieveEmployeeAdjustments($parameters);
 
             return $response->withJson($hoursAdjustments, 200);
+
+        } catch (Exception $exception) {
+            return $response->withJson($exception->getMessage(), $exception->getCode());
+        }
+    }
+
+    public function retrieveEmployeeAdjustmentsStatus(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        try {
+
+            $userId = $request->getAttribute('id');
+            $token = $request->getHeaderLine('Authorization');
+            $payload = $this->decodeToken($token);
+
+            $parameters['id_user'] = $payload['id'];
+
+            if ($userId !== $parameters['id_user']) {
+                throw new ForbiddenException('Usuário não autorizado.');
+            }
+
+            $adjustmentsStatus = $this->repository->retrieveEmployeeAdjustmentsStatus($parameters);
+
+            return $response->withJson($adjustmentsStatus, 200);
 
         } catch (Exception $exception) {
             return $response->withJson($exception->getMessage(), $exception->getCode());

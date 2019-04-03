@@ -12,7 +12,7 @@ use PDOStatement;
 /**
  * Model de Ajuste de Horas
  *
- * Class User
+ * Class HourAdjustment
  * @package App\Models
  */
 class HourAdjustment extends Model
