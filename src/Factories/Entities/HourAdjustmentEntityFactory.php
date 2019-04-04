@@ -38,7 +38,7 @@ class HourAdjustmentEntityFactory
         if ($entryHourDateTime->getTimestamp() >
             $exitHourDateTime->getTimestamp()
         ) {
-            throw new DomainException('O registro de entrada é maior que o registro de saída.');
+            throw new DomainException('O registro de entrada é maior que o registro de saída.', 400);
         }
 
         $duration = $exitHourDateTime->diff($entryHourDateTime);
