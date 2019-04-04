@@ -147,7 +147,8 @@ class DatabaseServerConnection
             return "mysql:" .
                 "host=" . $host . ";" .
                 "port=" . $port. ";" .
-                "dbname=" . $database;
+                "dbname=" . $database . ";" .
+                "charset=utf8";
         }
 
         return "mysql:" .
