@@ -42,6 +42,8 @@ class HourAdjustment extends Model
     {
         $query = "SELECT * FROM " . $this->getTableName();
 
+        $query .= " ORDER BY date, entryHour";
+
         $stm = $this->getPdo()->prepare($query);
 
         $stm->execute();
@@ -67,6 +69,9 @@ class HourAdjustment extends Model
     {
         $query = "SELECT * FROM " . $this->getTableName() . " ".
                  "WHERE id = :id";
+
+
+        $query .= " ORDER BY date, entryHour";
 
         $stm = $this->getPdo()->prepare($query);
         $stm->bindParam(':id', $id);
@@ -106,6 +111,8 @@ class HourAdjustment extends Model
         if (!empty($additionalFilters['justificationId'])) {
             $query .= " AND id_justification = :justificationId";
         }
+
+        $query .= " ORDER BY date DESC, entryHour";
 
         $stm = $this->getPdo()->prepare($query);
         $stm->bindParam(':id_user', $userId);
