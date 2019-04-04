@@ -184,6 +184,39 @@ class HourAdjustment
     /**
      * @param array $parameters
      *
+     * @throws NotFoundException
+     * @throws OutOfRangeException
+     */
+    public function searchEmployeeAdjustments(array $parameters)
+    {
+        $userModel = new Models\User(
+            DefaultDatabaseConnection::getConnection()
+        );
+
+        $userProfilesModel = new Models\UserProfile(
+            DefaultDatabaseConnection::getConnection()
+        );
+
+        $userEntity = $userModel->findById($parameters['id_user']);
+
+        $userEntity->addProfiles(
+            $userProfilesModel->findUserProfilesByUserId($userEntity->getId())
+        );
+
+        $employeeEntity = new Entities\UserProfiles\Employee();
+
+        $userEntity->getProfile($employeeEntity->getCode());
+
+        $hoursAdjustments = $this->model->findAdjustmentsByUserId(
+            $userEntity->getId(), $parameters);
+
+        return HourAdjustmentFormatter::fromEntityArrayToControllerArray($hoursAdjustments);
+    }
+
+
+    /**
+     * @param array $parameters
+     *
      * @throws ForbiddenException
      * @throws NotFoundException
      */

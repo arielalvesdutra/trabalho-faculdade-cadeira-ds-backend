@@ -29,7 +29,7 @@ class UsersUserProfilesTable implements  TableFactoryInterface
             )
         );
 
-        $tableName = 'users_user_profileswqq';
+        $tableName = 'users_user_profiles';
         $table = new Databases\Table($tableName);
 
         $table->addColumn((new Databases\Column('id_user', new IntType()))

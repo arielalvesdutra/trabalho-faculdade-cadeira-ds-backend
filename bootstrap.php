@@ -55,13 +55,3 @@ function setOnExecutionTimeEnvFileValues()
 }
 
 setOnExecutionTimeEnvFileValues();
-
-use App\Databases\Factories\Databases\HourAdjustmentSystemDatabase;
-use App\Databases\Factories\Tables\UserTable;
-use App\Databases\Factories\Tables\UserProfileTable;
-use App\Databases\Factories\Tables\UsersUserProfilesTable;
-
-HourAdjustmentSystemDatabase::create();
-UserTable::create();
-UserProfileTable::create();
-UsersUserProfilesTable::create();

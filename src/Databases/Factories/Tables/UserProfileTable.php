@@ -46,7 +46,7 @@ class UserProfileTable implements  TableFactoryInterface
 
         $table->addColumn((new Databases\Column('code', new VarcharType()))
             ->setNotNull()
-            ->setSize(20)
+            ->setSize(35)
             ->setUnique()
         );
 

@@ -146,6 +146,27 @@ class HourAdjustment extends Controller
         }
     }
 
+    public function searchEmployeeAdjustments(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        try {
+            $token = $request->getHeaderLine('Authorization');
+            $payload = $this->decodeToken($token);
+            $parameters = $request->getQueryParams();
+            $parameters['id_user'] = $request->getAttribute('id');
+
+            if ($payload['id'] !== $parameters['id_user']) {
+                throw new ForbiddenException('Usuário não autorizado.');
+            }
+
+            $adjustments = $this->repository->searchEmployeeAdjustments($parameters);
+
+            return $response->withJson($adjustments,200);
+
+        } catch (Exception $exception) {
+            return $response->withJson($exception->getMessage(), $exception->getCode());
+        }
+    }
+
     public function update(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
