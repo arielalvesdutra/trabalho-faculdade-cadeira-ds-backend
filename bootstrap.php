@@ -55,3 +55,6 @@ function setOnExecutionTimeEnvFileValues()
 }
 
 setOnExecutionTimeEnvFileValues();
+
+use App\Databases\Factories\Databases\HourAdjustmentSystemDatabase;
+HourAdjustmentSystemDatabase::create();
