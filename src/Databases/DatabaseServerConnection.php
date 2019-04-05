@@ -57,7 +57,8 @@ class DatabaseServerConnection
     public function createDatabase(string $databaseName)
     {
         $result = $this->getPdo()->exec(
-            "CREATE DATABASE " . $databaseName
+            "CREATE DATABASE " . $databaseName . " " .
+            "DEFAULT CHARACTER SET utf8"
         );
 
         if ($result === false) {
@@ -73,7 +74,8 @@ class DatabaseServerConnection
     public function createDatabaseIfNotExists(string $databaseName)
     {
         $result = $this->getPdo()->exec(
-            "CREATE DATABASE IF NOT EXISTS " . $databaseName
+            "CREATE DATABASE IF NOT EXISTS " . $databaseName . " " .
+                     "DEFAULT CHARACTER SET utf8"
         );
 
         if ($result === false) {
