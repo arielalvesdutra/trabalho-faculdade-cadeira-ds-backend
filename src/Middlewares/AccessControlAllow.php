@@ -20,7 +20,7 @@ class AccessControlAllow
         $resp = $next($request, $response);
         return $resp
             ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS, HEAD');
     }
 }
